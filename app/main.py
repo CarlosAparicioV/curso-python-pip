@@ -1,10 +1,12 @@
 import utils
 import read_csv
 import charts
+import pandas as pd
 
 
 def run():
-
+    '''
+    Pandas ya hace todo esto, por lo que no es necesario hacerlo manualmente!
     # Primero obtenemos los datos usando el módulo read_csv y su método read_csv.
     data = read_csv.read_csv("data.csv")
     data = list(
@@ -12,8 +14,20 @@ def run():
 
     countries = list(map(lambda x: x["Country/Territory"], data))
     percentages = list(map(lambda x: x["World Population Percentage"], data))
+    '''
+    # Leemos el csv. Sustituye al módulo read_csv antes creado
+    df = pd.read_csv('data.csv')
+    # Sustituimos al filter
+    df = df[df['Continent'] == 'Africa']
+    # Obtenemos los valores de la columna Country
+    countries = df['Country/Territory'].values
+    # Obtenemos los valores de la columna World Population Percentage
+    percentages = df['World Population Percentage'].values
+    # Generamos pie chart gracias a Pandas
     charts.generate_pie_chart(countries, percentages)
 
+    # A partir de aquí ya no utilizamos Pandas
+    data = read_csv.read_csv("data.csv")
     # Pedimos al usuario que nos diga el país del cual necesita información
     country = input("Type country: ")
 
